@@ -1,1 +1,41 @@
-#
+---
+
+## 📂 Database
+
+The `database` folder contains all database-related assets, organized by course modules for clarity.
+
+### Core Database Assets
+- **Little_Lemmon_model.mwb**  
+  MySQL Workbench data model used to design the database schema.
+- **Module1_LittleLemonDM_ER.png**  
+  Entity Relationship (ER) diagram showing table structure and relationships.
+- **Module2_LittleLemonDB.sql**  
+  Main SQL script containing all database logic, including:
+  - Database and table creation
+  - Data insertion for testing
+  - Views
+  - Joins and subqueries
+  - Stored procedures required for the final assessment
+
+### Module Evidence
+To match the structure of the course, screenshots are grouped by module:
+
+- **module_1_img/**
+  - Screenshots related to database setup and data modeling (Module 1)
+
+- **module_2_img/**
+  - Screenshots demonstrating:
+    - Views
+    - JOIN queries
+    - Subqueries
+    - Prepared statements
+    - Stored procedures such as:
+      - GetMaxQuantity
+      - ManageBooking
+      - AddBooking
+      - UpdateBooking
+      - CancelBooking
+
+These images are included as visual evidence for peer review.
+
+---
