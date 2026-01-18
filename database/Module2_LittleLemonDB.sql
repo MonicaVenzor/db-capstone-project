@@ -1,4 +1,13 @@
 -- ===============================
+-- Module 1: Database verification
+-- ===============================
+
+SHOW DATABASES;
+
+USE littlelemondb;
+SHOW TABLES;
+
+-- ===============================
 -- Module 2: Virtual Tables, Joins,
 -- Subqueries, Procedures, Prepared Statements
 -- ===============================
@@ -127,3 +136,155 @@ END //
 DELIMITER ;
 
 SELECT * FROM Orders WHERE OrderID = 3;
+
+
+-- ===============================
+-- Module 2: BOOKINGS, TRANSACTIONS
+-- ===============================
+
+SHOW DATABASES;
+
+USE littlelemondb;
+SHOW TABLES;
+
+-- Mock data inserted for Module 2 testing purposes
+TRUNCATE TABLE Bookings;
+
+INSERT INTO Bookings (BookingID, BookingDate, BookingTime, TableNumber, CustomerID, StaffID) VALUES
+(1, '2022-10-10', '18:00:00', 5, 1, 1),
+(2, '2022-11-12', '19:00:00', 3, 3, 1),
+(3, '2022-10-11', '18:30:00', 2, 2, 2),
+(4, '2022-10-13', '20:00:00', 2, 1, 2);
+
+SELECT * FROM Bookings;
+
+-- Procedure: CheckBooking
+DROP PROCEDURE IF EXISTS CheckBooking;
+
+DELIMITER //
+
+CREATE PROCEDURE CheckBooking(
+    IN booking_date DATE,
+    IN table_number INT
+)
+BEGIN
+    DECLARE table_status VARCHAR(50);
+
+    SELECT 
+        IF(COUNT(*) > 0, 'Table is already booked', 'Table is available')
+    INTO table_status
+    FROM Bookings
+    WHERE BookingDate = booking_date
+      AND TableNumber = table_number;
+
+    SELECT table_status AS BookingStatus;
+END //
+
+DELIMITER ;
+
+-- Test CheckBooking
+CALL CheckBooking('2022-10-10', 5);
+
+-- Procedure: ManageBooking
+DROP PROCEDURE IF EXISTS ManageBooking;
+
+DELIMITER //
+
+CREATE PROCEDURE ManageBooking(
+    IN booking_date DATE,
+    IN table_number INT
+)
+BEGIN
+    DECLARE booking_count INT;
+
+    START TRANSACTION;
+
+    SELECT COUNT(*)
+    INTO booking_count
+    FROM Bookings
+    WHERE BookingDate = booking_date
+      AND TableNumber = table_number;
+
+    IF booking_count > 0 THEN
+        ROLLBACK;
+        SELECT 'Booking declined: table already booked' AS Status;
+    ELSE
+        INSERT INTO Bookings (BookingDate, BookingTime, TableNumber, CustomerID, StaffID)
+        VALUES (booking_date, '21:00:00', table_number, 1, 1);
+
+        COMMIT;
+        SELECT 'Booking confirmed' AS Status;
+    END IF;
+END //
+
+DELIMITER ;
+
+
+-- Test ManageBooking
+CALL ManageBooking('2022-10-10', 5);
+
+-- Procedure: AddBooking
+DROP PROCEDURE IF EXISTS AddBooking;
+
+DELIMITER //
+
+CREATE PROCEDURE AddBooking(
+    IN booking_id INT,
+    IN customer_id INT,
+    IN booking_date DATE,
+    IN table_number INT
+)
+BEGIN
+    INSERT INTO Bookings (BookingID, BookingDate, BookingTime, TableNumber, CustomerID, StaffID)
+    VALUES (booking_id, booking_date, '20:00:00', table_number, customer_id, 1);
+
+    SELECT 'New booking added' AS Status;
+END //
+
+DELIMITER ;
+
+-- Test AddBooking
+CALL AddBooking(10, 2, '2022-12-01', 4);
+
+
+-- Procedure: UpdateBooking
+DROP PROCEDURE IF EXISTS UpdateBooking;
+
+DELIMITER //
+
+CREATE PROCEDURE UpdateBooking(
+    IN booking_id INT,
+    IN new_booking_date DATE
+)
+BEGIN
+    UPDATE Bookings
+    SET BookingDate = new_booking_date
+    WHERE BookingID = booking_id;
+
+    SELECT 'Booking updated' AS Status;
+END //
+
+DELIMITER ;
+
+-- Test UpdateBooking
+CALL UpdateBooking(10, '2022-12-05');
+
+-- Procedure: CancelBooking
+DROP PROCEDURE IF EXISTS CancelBooking;
+
+DELIMITER //
+
+CREATE PROCEDURE CancelBooking(
+    IN booking_id INT
+)
+BEGIN
+    DELETE FROM Bookings
+    WHERE BookingID = booking_id;
+
+    SELECT 'Booking cancelled' AS Status;
+END //
+
+DELIMITER ;
+
+-- Test CancelBooking
+CALL CancelBooking(10);
