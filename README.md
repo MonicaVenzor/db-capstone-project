@@ -1,37 +1,47 @@
-# Data Engineering Portfolio: Little Lemon Operational Warehouse
-By Monica Venzor | Biotechnology & Data Engineering
-This repository showcases the end-to-end design and implementation of a Data Warehouse for operational management. While the case study is based on the food industry (Little Lemon), the architecture is built following principles of scalability, data integrity, and governance—skills that are critical in highly regulated industrial environments.
+# Operational Data Warehouse System
 
-# 🏗️ Architecture & Technical Capabilities
-The project demonstrates a complete data engineering workflow:
+Operational data in most organizations lives in fragments: separate 
+tables, inconsistent formats, no unified logic. This project builds 
+a complete data warehouse from the ground up — from schema design 
+to ETL pipelines to a BI layer — following the same principles that 
+apply in regulated industrial environments: every record traceable, 
+every transformation documented.
 
-1. Data Modeling & SQL Development
-  Relational Design: Implementation of a robust schema (Star Schema/Normalized) to ensure data consistency and reduce redundancy.
-  Server-Side Logic: Development of Stored Procedures to automate critical business processes (bookings, cancellations, and sales reporting), optimizing performance by keeping logic close to the data.
-  Data Quality & Governance: Implementation of constraints and validation rules to ensure data remains reliable and "audit-ready"—a direct application of scientific rigor to data management.
+## What it does
 
-3. Integration & Automation (Python)
-  DB-API Connectivity: Using the mysql-connector-python to establish secure connections for data extraction.
-  Programmatic Data Handling: Executing complex queries and procedures through Python to bridge the gap between raw storage and analytical insights.
+Designs and implements a relational data warehouse for operational 
+management. Integrates multiple data sources through ETL processes 
+with data quality controls at each stage. Exposes insights through 
+a Tableau dashboard layer.
 
-3. Business Intelligence (Tableau)
-  KPI Visualization: Transformation of raw data into actionable insights through interactive dashboards, focusing on sales trends, profitability, and operational efficiency.
+## Stack
 
-# 📂 Repository Structure
-database/: Contains the EER (Entity-Relationship) models, schema creation scripts, and optimized Stored Procedures.
+`SQL` `MySQL` `Python` `Tableau` `Jupyter`
 
-python/: Integration notebooks demonstrating the ability to handle data programmatically.
+## Technical decisions
 
-tableau/: Visual analysis layer for business result interpretation.
+Schema designed as a normalized relational model to ensure data 
+consistency and reduce redundancy. Stored procedures automate 
+critical business processes, keeping logic close to the data for 
+performance and maintainability. Python integration via 
+mysql-connector handles programmatic data extraction and bridges 
+raw storage with the analytical layer.
 
-# 🧪 The "Bio-Data" Advantage
-Coming from a Biotechnology background, my approach to data is rooted in Compliance and Traceability.
+Data quality controls implemented at every ETL stage: row count 
+validation, referential integrity checks, and consistency 
+verification against source data before loading.
 
-"I apply scientific rigor to data validation, ensuring that every record is consistent and traceable. This mindset is essential in industries where data integrity isn't just a technical requirement, but a regulatory necessity."
+## Structure
 
-# ✅ Skills Demonstrated
-Languages: SQL (MySQL), Python.
+```
+operational-data-warehouse-system/
+├── database/
+├── python/
+├── tableau/
+└── README.md
+```
 
-Tools: MySQL Workbench, Tableau, Jupyter Notebooks.
+## Author
 
-Core Concepts: EER Modeling, Stored Procedures, Data Integrity, ETL Fundamentals.
+Mónica Venzor · [LinkedIn](https://linkedin.com/in/monicavenzor) · 
+[GitHub](https://github.com/MonicaVenzor)
